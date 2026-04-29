@@ -1,5 +1,5 @@
 ## 概要
-- Switchbot デバイスの一覧とステータスを取得して表示する
+- [SwitchBotAPI](https://github.com/OpenWonderLabs/SwitchBotAPI) を叩いて Switchbot デバイスの一覧とステータスを取得して表示する
 
 ## 必要な設定
 - server/.env.example を server/.env としてコピーし `SWITCHBOT_TOKEN` と `SWITCHBOT_SECRET` を設定すること
