@@ -8,7 +8,6 @@ const crypto = require('crypto');
 const path = require('path');
 
 const app = express();
-app.use(express.json());
 
 // ===== 環境変数 =====
 const TOKEN = process.env.SWITCHBOT_TOKEN;
@@ -82,27 +81,6 @@ app.get('/api/devices', async (req, res) => {
   } catch (err) {
     console.error(err.response?.data || err.message);
     res.status(500).json({ error: 'failed to fetch devices' });
-  }
-});
-
-// ===== トグル（例：BotやPlug）=====
-app.post('/api/toggle/:id', async (req, res) => {
-  try {
-    await axios.post(
-      `https://api.switch-bot.com/v1.1/devices/${req.params.id}/commands`,
-      {
-        command: "turnOn", // 必要に応じて切替ロジック入れる
-        parameter: "default",
-        commandType: "command"
-      },
-      { headers: createHeaders() }
-    );
-
-    res.json({ ok: true });
-
-  } catch (err) {
-    console.error(err.response?.data || err.message);
-    res.status(500).json({ error: true });
   }
 });
 
