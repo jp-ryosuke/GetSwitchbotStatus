@@ -8,77 +8,245 @@
 <script src="/js/app.js" defer></script>
 
 <style>
+* {
+  box-sizing: border-box;
+}
+
 body {
   margin: 0;
   font-family: sans-serif;
-  background: #1e1e1e;
+  background: #181a1d;
   color: #fff;
 }
 
 header {
-  background: #2c2c2c;
-  padding: 12px 20px;
-  font-size: 18px;
-  border-bottom: 1px solid #444;
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  background: rgb(35 38 42 / 94%);
+  padding: 16px clamp(16px, 3vw, 32px);
+  font-size: 20px;
+  font-weight: 700;
+  border-bottom: 1px solid #3b3f44;
+  backdrop-filter: blur(10px);
 }
 
 .grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
-  gap: 20px;
-  padding: 20px;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr));
+  align-items: stretch;
+  gap: clamp(12px, 1.8vw, 22px);
+  max-width: 1600px;
+  margin: 0 auto;
+  padding: clamp(16px, 2.5vw, 32px);
 }
 
 .card {
-  background: #2c2c2c;
-  border-radius: 12px;
-  padding: 16px;
-  min-height: 380px;
+  min-width: 0;
+  min-height: 300px;
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 12px;
+  padding: 20px;
+  background: linear-gradient(145deg, #292d32, #24272b);
+  border: 1px solid #3b4046;
+  border-radius: 16px;
+  box-shadow: 0 8px 24px rgb(0 0 0 / 16%);
+  transition: border-color 160ms ease, box-shadow 160ms ease;
+}
+
+.card:hover {
+  border-color: #555d66;
+  box-shadow: 0 12px 28px rgb(0 0 0 / 24%);
+}
+
+.card > summary {
+  position: relative;
+  padding-right: 76px;
+  cursor: pointer;
+  list-style: none;
+}
+
+.card > summary::-webkit-details-marker {
+  display: none;
+}
+
+.card > summary::after {
+  position: absolute;
+  top: 2px;
+  right: 0;
+  color: #aeb8c2;
+  content: '詳細 ＋';
+  font-size: 12px;
+  white-space: nowrap;
+}
+
+.card[open] > summary::after {
+  content: '閉じる −';
 }
 
 .card-graph {
   margin-top: auto;
+  height: 150px;
+  min-height: 150px;
 }
 
 .device-name {
-  font-size: 18px;
+  overflow-wrap: anywhere;
+  font-size: 19px;
   font-weight: bold;
 }
 
 .device-type {
+  margin-top: 4px;
   font-size: 12px;
-  color: #aaa;
+  color: #aab3bd;
 }
 
 .status {
-  font-size: 20px;
-  margin-top: 10px;
-  margin-bottom: 10px;
+  margin: 14px 0 8px;
+  font-size: 18px;
+  line-height: 1.55;
+  color: #f0f2f4;
 }
 
 .small {
   font-size: 14px;
+  color: #d5d9de;
+}
+
+.card-details {
+  padding-top: 14px;
+  border-top: 1px solid #3b4046;
+}
+
+.device-controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 14px 0;
+}
+
+.device-controls button {
+  min-height: 40px;
+  padding: 9px 14px;
+  border: 1px solid #515963;
+  border-radius: 9px;
+  background: #353a40;
+  color: #f6f7f8;
+  font: inherit;
+  cursor: pointer;
+}
+
+.device-controls button:hover:not(:disabled) {
+  background: #414850;
+}
+
+.device-controls button:disabled {
+  opacity: 0.55;
+  cursor: wait;
+}
+
+.device-controls .primary-button {
+  border-color: #426b9b;
+  background: #2d527d;
+}
+
+.ac-settings {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 10px;
+  margin: 12px 0;
+}
+
+.ac-settings label {
+  display: grid;
+  gap: 6px;
+  color: #c5cbd2;
+  font-size: 13px;
+}
+
+.ac-settings input,
+.ac-settings select {
+  min-width: 0;
+  min-height: 40px;
+  padding: 8px 10px;
+  border: 1px solid #515963;
+  border-radius: 8px;
+  background: #1e2226;
+  color: #fff;
+  font: inherit;
+}
+
+.action-message,
+.camera-note,
+.camera-events {
+  color: #b8c0c8;
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+.action-message:empty {
+  display: none;
+}
+
+.camera-event {
+  display: grid;
+  gap: 8px;
+  margin-top: 12px;
+  padding: 12px;
+  border: 1px solid #3b4046;
+  border-radius: 10px;
+  background: rgb(0 0 0 / 12%);
+}
+
+.camera-event time {
+  color: #aeb8c2;
+  font-size: 12px;
+}
+
+.camera-event img {
+  display: block;
+  width: 100%;
+  max-height: 280px;
+  object-fit: contain;
+  border-radius: 7px;
+  background: #111;
 }
 
 canvas {
   width: 100% !important;
-  height: 160px !important;
+  height: 150px !important;
 }
 
 #loading {
-  padding: 20px;
+  max-width: 1600px;
+  margin: 0 auto;
+  padding: 20px clamp(16px, 3vw, 32px);
+  color: #b8c0c8;
 }
 
 #error {
-  padding: 20px;
+  max-width: 1600px;
+  margin: 0 auto;
+  padding: 12px clamp(16px, 3vw, 32px);
   color: #ff8a80;
 }
 
 #error[hidden] {
   display: none;
+}
+
+@media (max-width: 480px) {
+  header {
+    padding-block: 14px;
+    font-size: 18px;
+  }
+
+  .card {
+    min-height: 280px;
+    padding: 16px;
+  }
 }
 
 </style>
